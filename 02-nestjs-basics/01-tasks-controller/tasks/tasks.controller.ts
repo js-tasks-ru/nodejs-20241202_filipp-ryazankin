@@ -9,9 +9,12 @@ import {
   Param,
   Patch,
   Post,
+  UsePipes,
 } from "@nestjs/common";
 import { TasksService } from "./tasks.service";
 import { Task } from "./task.model";
+import { JoiValidationPipe } from "./JoiValidationPipe";
+import { CreateTaskDto } from "./dto/create-task.dto";
 
 @Controller("tasks")
 export class TasksController {
@@ -29,7 +32,8 @@ export class TasksController {
   }
 
   @Post()
-  createTask(@Body() task: Task) {
+  @UsePipes(new JoiValidationPipe())
+  createTask(@Body() task: CreateTaskDto) {
     return this.tasksService.createTask(task);
   }
 
