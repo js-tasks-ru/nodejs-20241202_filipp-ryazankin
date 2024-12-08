@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { sortBy as sortByField } from "lodash";
 import { Task, TaskStatus } from "./task.model";
 
 @Injectable()
@@ -40,5 +41,24 @@ export class TasksService {
     status?: TaskStatus,
     page?: number,
     limit?: number,
-  ): Task[] {}
+    sortBy?: string,
+  ): Task[] {
+    let result = this.tasks.slice();
+
+    if (status) {
+      result = result.filter((item) => item.status === status);
+    }
+
+    if (sortBy) {
+      result = sortByField(result, [sortBy]);
+    }
+
+    if (page && limit) {
+      const start = (+page - 1) * +limit;
+      const end = start + +limit;
+      result = result.slice(start, end);
+    }
+
+    return result;
+  }
 }
