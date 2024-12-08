@@ -3,22 +3,19 @@ import {
   Controller,
   Delete,
   Get,
-  Header,
-  HttpCode,
-  NotFoundException,
   Param,
   Patch,
   Post,
   UsePipes,
+  ValidationPipe,
 } from "@nestjs/common";
 import { TasksService } from "./tasks.service";
 import { Task } from "./task.model";
-import { JoiValidationPipe } from "./JoiValidationPipe";
-import { CreateTaskDto } from "./dto/create-task.dto";
+import { CreateTaskDto } from "./dto/createTaskDto";
 
 @Controller("tasks")
 export class TasksController {
-  constructor(private readonly tasksService: TasksService) { }
+  constructor(private readonly tasksService: TasksService) {}
 
   @Get()
   getAllTasks() {
@@ -32,7 +29,8 @@ export class TasksController {
   }
 
   @Post()
-  @UsePipes(new JoiValidationPipe())
+  // @UsePipes(new JoiValidationPipe())
+  @UsePipes(ValidationPipe)
   createTask(@Body() task: CreateTaskDto) {
     return this.tasksService.createTask(task);
   }
