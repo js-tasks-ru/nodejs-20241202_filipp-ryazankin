@@ -1,5 +1,5 @@
 import { IsString, IsNotEmpty, IsIn, IsNumber } from "class-validator";
-import { OmitType, PickType } from "@nestjs/swagger";
+import { PickType } from "@nestjs/swagger";
 
 export enum TaskStatus {
   Pending = "pending",
@@ -32,9 +32,10 @@ export class CreateTaskDto extends PickType(Task, [
   "title",
   "description",
   "assignedTo",
-]) {}
+]) { }
+
 export class UpdateTaskDto extends PickType(Task, [
   "title",
   "description",
   "status",
-]) {}
+]) { }
